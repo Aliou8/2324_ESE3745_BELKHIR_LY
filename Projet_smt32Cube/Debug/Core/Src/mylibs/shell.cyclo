@@ -1,0 +1,4 @@
+../Core/Src/mylibs/shell.c:34:6:Shell_Init	1
+../Core/Src/mylibs/shell.c:46:6:Shell_Loop	9
+../Core/Src/mylibs/shell.c:92:6:HAL_UART_RxCpltCallback	1
+../Core/Src/mylibs/shell.c:97:6:motor_speed	3

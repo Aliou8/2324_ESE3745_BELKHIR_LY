@@ -1,0 +1,9 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "tim.h": "c",
+        "main.h": "c",
+        "stm32g4xx_hal.h": "c",
+        "stm32g4xx_hal_conf.h": "c"
+    }
+}
