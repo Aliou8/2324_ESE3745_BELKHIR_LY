@@ -1,4 +1,0 @@
-../Core/Src/mylibs/shell.c:34:6:Shell_Init	8	static
-../Core/Src/mylibs/shell.c:46:6:Shell_Loop	16	static
-../Core/Src/mylibs/shell.c:92:6:HAL_UART_RxCpltCallback	16	static
-../Core/Src/mylibs/shell.c:97:6:motor_speed	32	static

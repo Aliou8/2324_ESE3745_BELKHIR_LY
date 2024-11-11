@@ -1,0 +1,4 @@
+../Core/Src/mylibs/moteur.c:26:13:setPWMsDutyCycle	24	static
+../Core/Src/mylibs/moteur.c:64:6:moteurSetSpeed	32	static
+../Core/Src/mylibs/moteur.c:85:6:moteurStart	8	static
+../Core/Src/mylibs/moteur.c:102:6:moteurStop	8	static
