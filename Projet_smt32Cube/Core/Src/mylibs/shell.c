@@ -79,7 +79,13 @@ void Shell_Loop(void){
 			HAL_UART_Transmit(&huart2, uartTxBuffer, uartTxStringLength, HAL_MAX_DELAY);
 		}
 		else if (strcmp(argv[0],"speed")==0){
-			motor_speed(argv[1]);
+			moteurSetSpeed(argv[1]);
+		}
+		else if (strcmp(argv[0],"stop")==0){
+			moteurStop();
+		}
+		else if (strcmp(argv[0],"sart")==0){
+			moteurStart();
 		}
 		else{
 			HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
@@ -93,27 +99,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef * huart){
 	uartRxReceived = 1;
 	HAL_UART_Receive_IT(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE);
 }
-
-void motor_speed(char* cmd){
-	char speed[3]; //buffer pour récupérer la valeur pour la vitesse. On choisit de prendre 3 digits correspondant au rapport cyclique
-	speed[0] = cmd[8];
-	speed[1] = cmd[9];
-	speed[2] = cmd[10];
-	double alpha = atoi(speed);
-	if (alpha > 100){ // on teste si notre valeur désirée est plus grande que la vitessse maximale
-		alpha = 100;
-	}
-	if (alpha < 0){ // on teste si notre valeur désirée est plus grande en valeur absolue que la vitessse maximale
-		alpha = 0;
-	}
-	alpha = alpha/100;
-	//HAL_UART_Transmit(&huart2, speed, sizeof(speed), HAL_MAX_DELAY); //ligne de code pour débuguer
-
-	//on modifie les registres CCR1 et CCR2 pour mettre à jour le rapport cyclique:
-	TIM1->CCR1 = (int)(alpha*500);
-	TIM1->CCR2 = (int)((1-alpha)*500);
-}
-
 
 
 
