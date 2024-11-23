@@ -43,7 +43,8 @@ void Shell_Init(void){
 	HAL_UART_Transmit(&huart2, prompt, strlen((char *)prompt), HAL_MAX_DELAY);
 }
 
-void Shell_Loop(void){
+void Shell_Loop(void)
+{
 	if(uartRxReceived){
 		switch(uartRxBuffer[0]){
 		case ASCII_CR: // Nouvelle ligne, instruction à traiter
@@ -71,7 +72,7 @@ void Shell_Loop(void){
 	}
 
 	if(newCmdReady){
-		if(strcmp(argv[1],"baa")==0){
+		if(strcmp(argv[1],"what")==0){
 			HAL_UART_Transmit(&huart2, brian, sizeof(brian), HAL_MAX_DELAY);
 		}
 		else if(strcmp(argv[0],"help")==0){
@@ -84,8 +85,11 @@ void Shell_Loop(void){
 		else if (strcmp(argv[0],"stop")==0){
 			moteurStop();
 		}
-		else if (strcmp(argv[0],"sart")==0){
+		else if (strcmp(argv[0],"start")==0){
 			moteurStart();
+		}
+		else if (strcmp(argv[0],"current")==0){
+					displayCurrent();
 		}
 		else{
 			HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);

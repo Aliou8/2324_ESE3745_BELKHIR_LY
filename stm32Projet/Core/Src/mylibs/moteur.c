@@ -13,6 +13,7 @@
 #include "mylibs/moteur.h"
 #include "tim.h"
 #include <stdlib.h>
+#include "adc.h"
 
 /**
  * @brief Change progressivement le rapport cyclique PWM pour atteindre la valeur souhaitée.
@@ -36,7 +37,7 @@ static void setPWMsDutyCycle(int alpha)
             alphaActuel--; // Décrémente alphaActuel pour atteindre la cible
             __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, alphaActuel);
             __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, ALPHA_MAX - alphaActuel);
-            HAL_Delay(1); 
+            HAL_Delay(20);
         }
     }
     else
@@ -47,7 +48,7 @@ static void setPWMsDutyCycle(int alpha)
             alphaActuel++; // Incrémente alphaActuel pour atteindre la cible
             __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, alphaActuel);
             __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, ALPHA_MAX - alphaActuel);
-            HAL_Delay(1);
+            HAL_Delay(20);
         }
     }
 }
@@ -72,7 +73,7 @@ void moteurSetSpeed(char* cmd)
     {
         vitesse = 0;
     }
-    uint8_t alpha = (vitesse * ALPHA_MAX) / VITESSE_MAX;  // Convertit la vitesse en rapport cyclique PWM
+    uint32_t alpha = (vitesse * ALPHA_MAX)/VITESSE_MAX; // Convertit la vitesse en rapport cyclique PWM
     setPWMsDutyCycle(alpha);
 }
 
@@ -100,7 +101,6 @@ void moteurStart(void)
  * Elle arrête le signal PWM pour chaque canal.
  */
 void moteurStop(void)
-
 {
     __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, ALPHA_MIN);
     __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, ALPHA_MIN);
@@ -109,3 +109,16 @@ void moteurStop(void)
     HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1);
     HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2);
 }
+void displayCurrent(void){
+    // Start ADC Conversion
+	float AD_RES=50 ;
+     HAL_ADC_Start(&hadc1);
+    // Poll ADC1 Perihperal & TimeOut = 1mSec
+     HAL_ADC_PollForConversion(&hadc1, 1);
+    // Read The ADC Conversion Result
+     AD_RES = HAL_ADC_GetValue(&hadc1);
+     AD_RES  = AD_RES*1.65/2375 ;
+     AD_RES = (AD_RES-1.65)/0.00005;
+     printf("val = %f \r\n",AD_RES) ;
+}
+

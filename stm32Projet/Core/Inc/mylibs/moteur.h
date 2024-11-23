@@ -34,5 +34,6 @@ void moteurStop(void);
 /// @brief Ajuste la vitesse du moteur en fonction de la commande reçue.
 /// @param cmd : La commande de vitesse .
 void moteurSetSpeed(char * cmd);
+void displayCurrent(void);
 
 #endif // __MOTEUR__

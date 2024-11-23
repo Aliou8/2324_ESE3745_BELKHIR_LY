@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": "d:/TP_TD_ENSEA_3A/AUTO/2425_ESE3745_BELKHIR_LY/stm32Projet/Core/Src/mylibs",
+      "program": "d:/TP_TD_ENSEA_3A/AUTO/2425_ESE3745_BELKHIR_LY/stm32Projet/Core/Src/mylibs/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}

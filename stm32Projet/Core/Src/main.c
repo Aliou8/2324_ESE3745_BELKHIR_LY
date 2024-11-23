@@ -57,6 +57,19 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int __io_putchar(int chr){
+
+
+
+HAL_UART_Transmit(&huart2, (uint8_t*)&chr,1, HAL_MAX_DELAY);
+
+//HAL_UART_Transmit(&huart2, (uint8_t*)&chr,1, HAL_MAX_DELAY);
+
+return chr;
+
+}
+
+
 
 /* USER CODE END 0 */
 
@@ -97,21 +110,24 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
-  HAL_TIMEx_PWMN_Start(&htim1,TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_2);
-  HAL_TIMEx_PWMN_Start(&htim1,TIM_CHANNEL_2);
-
+  //HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
+  //HAL_TIMEx_PWMN_Start(&htim1,TIM_CHANNEL_1);
+  //HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_2);
+  //HAL_TIMEx_PWMN_Start(&htim1,TIM_CHANNEL_2);
   Shell_Init() ;
+  HAL_ADCEx_Calibration_Start(&hadc1,ADC_SINGLE_ENDED);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
+		Shell_Loop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+     HAL_Delay(1);
 	}
   /* USER CODE END 3 */
 }
