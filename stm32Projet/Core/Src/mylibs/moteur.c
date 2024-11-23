@@ -4,7 +4,7 @@
  * @brief Implémentation des fonctions de contrôle du moteur via les signaux PWM.
  * @version 0.1
  * @date 2024-11-09
- * 
+ *
  * Ce fichier contient les fonctions permettant de démarrer, arrêter et ajuster la vitesse du moteur.
  * La vitesse est contrôlée par un signal PWM, dont le rapport cyclique est ajusté progressivement pour
  * éviter les transitions brutales.
@@ -15,13 +15,16 @@
 #include <stdlib.h>
 #include "adc.h"
 
+static uint16_t ADC_12B = 4095;
+static float Vref = 3.3;
+
 /**
  * @brief Change progressivement le rapport cyclique PWM pour atteindre la valeur souhaitée.
- * 
+ *
  * Cette fonction permet de changer le rapport cyclique de manière douce pour éviter les changements
  * brusques dans la vitesse du moteur.
- * 
- * @param alpha Nouvelle valeur du rapport cyclique souhaité 
+ *
+ * @param alpha Nouvelle valeur du rapport cyclique souhaité
  */
 
 static void setPWMsDutyCycle(int alpha)
@@ -55,31 +58,31 @@ static void setPWMsDutyCycle(int alpha)
 
 /**
  * @brief Définit la vitesse du moteur en fonction de la commande reçue.
- * 
+ *
  * Cette fonction reçoit une commande de type char* représentant la vitesse souhaitée, la convertit en un entier,
  * et la limite entre 0 et VITESSE_MAX. Elle ajuste ensuite le rapport cyclique PWM.
- * 
- * @param cmd La commande de vitesse souhaitée transmise par UART 
+ *
+ * @param cmd La commande de vitesse souhaitée transmise par UART
  */
 
-void moteurSetSpeed(char* cmd)
+void moteurSetSpeed(char *cmd)
 {
-    double vitesse = atoi(cmd);
-    if (vitesse > VITESSE_MAX)  // Limite la vitesse à la valeur maximale
+    float vitesse = atoi(cmd);
+    if (vitesse > VITESSE_MAX) // Limite la vitesse à la valeur maximale
     {
         vitesse = VITESSE_MAX;
     }
-    if (vitesse < 0)  // Limite la vitesse à la valeur minimale
+    if (vitesse < 0) // Limite la vitesse à la valeur minimale
     {
         vitesse = 0;
     }
-    uint32_t alpha = (vitesse * ALPHA_MAX)/VITESSE_MAX; // Convertit la vitesse en rapport cyclique PWM
+    uint32_t alpha = (vitesse * ALPHA_MAX) / VITESSE_MAX; // Convertit la vitesse en rapport cyclique PWM
     setPWMsDutyCycle(alpha);
 }
 
 /**
  * @brief Démarre le moteur en fixant un rapport cyclique initial de 50%.
- * 
+ *
  * Cette fonction initialise le moteur avec un rapport cyclique correspondant à une vitesse de 50%.
  * Elle configure les canaux TIM_CHANNEL1 et TIM_CHANNEL2 avec des valeurs complémentaires pour démarrer le moteur.
  */
@@ -96,7 +99,7 @@ void moteurStart(void)
 
 /**
  * @brief Arrête le moteur en fixant le rapport cyclique à 0%.
- * 
+ *
  * Cette fonction stoppe le moteur en mettant le rapport cyclique des canaux TIM_CHANNEL1 et TIM_CHANNEL2 à 0.
  * Elle arrête le signal PWM pour chaque canal.
  */
@@ -109,16 +112,74 @@ void moteurStop(void)
     HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1);
     HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2);
 }
-void displayCurrent(void){
-    // Start ADC Conversion
-	float AD_RES=50 ;
-     HAL_ADC_Start(&hadc1);
-    // Poll ADC1 Perihperal & TimeOut = 1mSec
-     HAL_ADC_PollForConversion(&hadc1, 1);
-    // Read The ADC Conversion Result
-     AD_RES = HAL_ADC_GetValue(&hadc1);
-     AD_RES  = AD_RES*1.65/2375 ;
-     AD_RES = (AD_RES-1.65)/0.00005;
-     printf("val = %f \r\n",AD_RES) ;
+
+/// Résolution maximale de l'ADC (12 bits, soit 4095).
+static uint16_t ADC_12B = 4095;
+
+/// Tension de référence de l'ADC en volts.
+static float Vref = 3.3;
+
+/// Tension de décalage (offset) en volts.
+static float Voff = 1.65;
+
+/// Constante de conversion tension-courant.
+static float Ks = 0.05;
+
+/// Tampon DMA pour stocker les données ADC.
+static uint16_t adc_buffer[ADC_BUFFER_SIZE];
+
+/**
+ * @brief Lit la valeur actuelle du courant via le tampon DMA et l'affiche sur la console.
+ *
+ * Cette fonction lit la dernière valeur convertie par l'ADC (gérée en arrière-plan par le DMA),
+ * calcule le courant correspondant à l'aide des paramètres calibrés, puis
+ * affiche la valeur du courant sur la console via `printf`.
+ */
+void displayCurrent(void)
+{
+    float I = getCurrent();
+
+    // Afficher le courant mesuré
+    printf("Current = %.3f A\r\n", I);
 }
+
+/**
+ * @brief Initialise l'ADC en mode DMA avec déclenchement par TIMER.
+ *
+ * Configure le DMA pour transférer les données ADC dans un tampon
+ * et démarre le TIMER pour assurer un déclenchement périodique des conversions ADC.
+ */
+void ADC_DMA_Init(void)
+{
+    // Démarre le DMA pour recevoir les données ADC
+    HAL_ADC_Start_DMA(&hadc1, (uint32_t *)adc_buffer, ADC_BUFFER_SIZE);
+
+    // Démarre le timer pour déclencher les conversions ADC périodiquement
+    HAL_TIM_Base_Start(&htim1);
+}
+
+/**
+ * @brief Calcule le courant mesuré à partir des données ADC.
+ *
+ * Cette fonction lit la dernière valeur du tampon ADC (rempli automatiquement par DMA),
+ * calcule la tension de sortie correspondante, puis convertit cette tension en courant
+ * en utilisant une formule calibrée.
+ *
+ * @return Le courant mesuré en ampères (float).
+ */
+float getCurrent(void)
+{
+    // Lire la dernière valeur convertie par l'ADC
+    uint16_t ADC_value = adc_buffer[0];
+
+    // Calculer la tension de sortie à partir de la valeur ADC
+    float Vout = ADC_value * Vref / ADC_12B;
+
+    // Calculer le courant à partir de la tension de sortie
+    float I = (Vout - Voff) / Ks;
+
+    // Retourner le courant calculé
+    return I;
+}
+
 

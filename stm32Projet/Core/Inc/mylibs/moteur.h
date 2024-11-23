@@ -23,7 +23,14 @@
 #define ALPHA_MAX (TIM1->ARR) ///< Valeur maximale du rapport cyclique (PWM à 100%)
 #define ALPHA_MIN 0           ///< Valeur minimale du rapport cyclique (PWM à 0%)
 #define ALPHA_0   (ALPHA_MAX / 2) ///< Valeur moyenne du rapport cyclique (PWM à 50%)
-#define VITESSE_MAX 3000      ///< Vitesse maximale définie pour le moteur (en pourcentage ou unité)
+#define VITESSE_MAX 3000      ///< Vitesse maximale définie pour le moteur
+#define ADC_BUFFER_SIZE 1 ///<Taille du tampon ADC utilisé pour DMA
+typedef struct {
+    float Kp;     // Gain proportionnel
+    float Ki;     // Gain intégral
+    float Kd;     // Gain dérivé
+    float dt;     // Intervalle de temps (en secondes)
+} PID_parameter_t;
 
 /// @brief Démarre le moteur avec un rapport cyclique initial de 50%.
 void moteurStart(void);
@@ -35,5 +42,9 @@ void moteurStop(void);
 /// @param cmd : La commande de vitesse .
 void moteurSetSpeed(char * cmd);
 void displayCurrent(void);
+void encodeurStart(void) ;
+float getCurrent(void) ;
+float getSpeed(void);
+void  correcteurPID(PID_prameter_t param , float input , float* oldvalue) ;
 
 #endif // __MOTEUR__
