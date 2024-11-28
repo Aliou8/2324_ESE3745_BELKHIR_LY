@@ -12,11 +12,9 @@
 
 #include "mylibs/moteur.h"
 #include "tim.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include "adc.h"
-
-static uint16_t ADC_12B = 4095;
-static float Vref = 3.3;
 
 /**
  * @brief Change progressivement le rapport cyclique PWM pour atteindre la valeur souhaitée.
@@ -29,31 +27,31 @@ static float Vref = 3.3;
 
 static void setPWMsDutyCycle(int alpha)
 {
-    int alphaActuel = __HAL_TIM_GetCompare(&htim1, TIM_CHANNEL_1); // Obtient le rapport cyclique actuel de TIM_CHANNEL1
+	int alphaActuel = __HAL_TIM_GetCompare(&htim1, TIM_CHANNEL_1); // Obtient le rapport cyclique actuel de TIM_CHANNEL1
 
-    // Ajustement progressif du rapport cyclique
-    if (alpha < alphaActuel)
-    {
-        // Si la nouvelle valeur est inférieure à l'actuelle, on la diminue progressivement
-        while (alphaActuel > alpha)
-        {
-            alphaActuel--; // Décrémente alphaActuel pour atteindre la cible
-            __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, alphaActuel);
-            __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, ALPHA_MAX - alphaActuel);
-            HAL_Delay(20);
-        }
-    }
-    else
-    {
-        // Si la nouvelle valeur est supérieure à l'actuelle, on l'augmente progressivement
-        while (alphaActuel < alpha)
-        {
-            alphaActuel++; // Incrémente alphaActuel pour atteindre la cible
-            __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, alphaActuel);
-            __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, ALPHA_MAX - alphaActuel);
-            HAL_Delay(20);
-        }
-    }
+	// Ajustement progressif du rapport cyclique
+	if (alpha < alphaActuel)
+	{
+		// Si la nouvelle valeur est inférieure à l'actuelle, on la diminue progressivement
+		while (alphaActuel > alpha)
+		{
+			alphaActuel--; // Décrémente alphaActuel pour atteindre la cible
+			__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, alphaActuel);
+			__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, ALPHA_MAX - alphaActuel);
+			HAL_Delay(20);
+		}
+	}
+	else
+	{
+		// Si la nouvelle valeur est supérieure à l'actuelle, on l'augmente progressivement
+		while (alphaActuel < alpha)
+		{
+			alphaActuel++; // Incrémente alphaActuel pour atteindre la cible
+			__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, alphaActuel);
+			__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, ALPHA_MAX - alphaActuel);
+			HAL_Delay(20);
+		}
+	}
 }
 
 /**
@@ -67,34 +65,34 @@ static void setPWMsDutyCycle(int alpha)
 
 void moteurSetSpeed(char *cmd)
 {
-    float vitesse = atoi(cmd);
-    if (vitesse > VITESSE_MAX) // Limite la vitesse à la valeur maximale
-    {
-        vitesse = VITESSE_MAX;
-    }
-    if (vitesse < 0) // Limite la vitesse à la valeur minimale
-    {
-        vitesse = 0;
-    }
-    uint32_t alpha = (vitesse * ALPHA_MAX) / VITESSE_MAX; // Convertit la vitesse en rapport cyclique PWM
-    setPWMsDutyCycle(alpha);
+	float vitesse = atoi(cmd);
+	if (vitesse > VITESSE_MAX) // Limite la vitesse à la valeur maximale
+	{
+		vitesse = VITESSE_MAX;
+	}
+	if (vitesse < 0) // Limite la vitesse à la valeur minimale
+	{
+		vitesse = 0;
+	}
+	uint32_t alpha = 0.5*(1+vitesse/VITESSE_MAX)*ALPHA_MAX; // Convertit la vitesse en rapport cyclique PWM
+	setPWMsDutyCycle(alpha);
 }
 
 /**
  * @brief Démarre le moteur en fixant un rapport cyclique initial de 50%.
  *
  * Cette fonction initialise le moteur avec un rapport cyclique correspondant à une vitesse de 50%.
- * Elle configure les canaux TIM_CHANNEL1 et TIM_CHANNEL2 avec des valeurs complémentaires pour démarrer le moteur.
+ * Elle configure les canaux TIM_CHANNEL1 et TIM_CHANNEL2 et les complémentaires pour démarrer le moteur.
  */
 void moteurStart(void)
-
 {
-    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, ALPHA_0);
-    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, ALPHA_MAX - ALPHA_0);
-    HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-    HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-    HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
-    HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+	__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, ALPHA_0);
+	__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, ALPHA_MAX - ALPHA_0);
+	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
 }
 
 /**
@@ -105,22 +103,22 @@ void moteurStart(void)
  */
 void moteurStop(void)
 {
-    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, ALPHA_MIN);
-    __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, ALPHA_MIN);
-    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
-    HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
-    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1);
-    HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2);
+	__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1, ALPHA_MIN);
+	__HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_2, ALPHA_MIN);
+	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2);
+	HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1);
+	HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2);
 }
 
 /// Résolution maximale de l'ADC (12 bits, soit 4095).
-static uint16_t ADC_12B = 4095;
+static float ADC_12B = 4095.0;
 
 /// Tension de référence de l'ADC en volts.
 static float Vref = 3.3;
 
 /// Tension de décalage (offset) en volts.
-static float Voff = 1.65;
+static float Voff = 1.95;
 
 /// Constante de conversion tension-courant.
 static float Ks = 0.05;
@@ -136,11 +134,12 @@ static uint16_t adc_buffer[ADC_BUFFER_SIZE];
  * affiche la valeur du courant sur la console via `printf`.
  */
 void displayCurrent(void)
-{
-    float I = getCurrent();
 
-    // Afficher le courant mesuré
-    printf("Current = %.3f A\r\n", I);
+{
+	float I = getCurrent();
+
+	// Afficher le courant mesuré
+	printf("Current = %f A\r\n", I);
 }
 
 /**
@@ -150,12 +149,13 @@ void displayCurrent(void)
  * et démarre le TIMER pour assurer un déclenchement périodique des conversions ADC.
  */
 void ADC_DMA_Init(void)
-{
-    // Démarre le DMA pour recevoir les données ADC
-    HAL_ADC_Start_DMA(&hadc1, (uint32_t *)adc_buffer, ADC_BUFFER_SIZE);
 
-    // Démarre le timer pour déclencher les conversions ADC périodiquement
-    HAL_TIM_Base_Start(&htim1);
+{
+	// Démarre le DMA pour recevoir les données ADC
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t *)adc_buffer, ADC_BUFFER_SIZE);
+
+	// Démarre le timer pour déclencher les conversions ADC périodiquement
+	HAL_TIM_Base_Start(&htim1);
 }
 
 /**
@@ -169,17 +169,53 @@ void ADC_DMA_Init(void)
  */
 float getCurrent(void)
 {
-    // Lire la dernière valeur convertie par l'ADC
-    uint16_t ADC_value = adc_buffer[0];
+	// Lire la dernière valeur convertie par l'ADC
+	float ADC_value = adc_buffer[0];
 
-    // Calculer la tension de sortie à partir de la valeur ADC
-    float Vout = ADC_value * Vref / ADC_12B;
+	// Calculer la tension de sortie à partir de la valeur ADC
+	float Vout = ADC_value*Vref/ ADC_12B;
 
-    // Calculer le courant à partir de la tension de sortie
-    float I = (Vout - Voff) / Ks;
+	// Calculer le courant à partir de la tension de sortie
+	float I = (Vout- Voff)/Ks;
 
-    // Retourner le courant calculé
-    return I;
+	// Retourner le courant calculé
+	return I;
 }
 
+
+/**
+ * @brief Fréquence d'échantillonnage de la vitesse en Hz.
+ */
+static float Fe = 100.0;
+
+/**
+ * @brief Retourne la position actuelle du moteur à partir du compteur du Timer.
+ *
+ * Cette fonction lit la valeur actuelle du compteur du Timer (TIM3), configuré en mode encodeur,
+ * pour déterminer la position du moteur.
+ *
+ * @return La position actuelle du moteur en tant qu'entier 16 bits signé.
+ */
+int16_t getPos(void)
+{
+	int16_t position = TIM3->CNT;
+	return position;
+}
+
+
+/**
+ * @brief Calcule la vitesse de rotation du moteur en tours par minute (RPM).
+ *
+ * Cette fonction utilise la différence entre une position précédente et la position actuelle
+ * pour calculer la vitesse de rotation du moteur. La vitesse est exprimée en tours par minute (RPM)
+ * en utilisant la fréquence d'échantillonnage du système (Fe).
+ *
+ * @param oldpos La position précédente du moteur, obtenue à partir de `getPos()`.
+ * @return La vitesse de rotation calculée en tours par minute (RPM) sous forme de nombre flottant.
+ */
+float getSpeed(int16_t oldpos)
+{
+	int16_t pos = getPos();
+	return (float)(pos - oldpos) * Fe * 60;
+}
 

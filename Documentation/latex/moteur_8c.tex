@@ -1,0 +1,156 @@
+\doxysection{D\+:/\+TP\+\_\+\+TD\+\_\+\+ENSEA\+\_\+3\+A/\+AUTO/2425\+\_\+\+ESE3745\+\_\+\+BELKHIR\+\_\+\+LY/stm32\+Projet/\+Core/\+Src/mylibs/moteur.c File Reference}
+\hypertarget{moteur_8c}{}\label{moteur_8c}\index{D:/TP\_TD\_ENSEA\_3A/AUTO/2425\_ESE3745\_BELKHIR\_LY/stm32Projet/Core/Src/mylibs/moteur.c@{D:/TP\_TD\_ENSEA\_3A/AUTO/2425\_ESE3745\_BELKHIR\_LY/stm32Projet/Core/Src/mylibs/moteur.c}}
+
+
+Implémentation des fonctions de contrôle du moteur via les signaux PWM.  
+
+
+{\ttfamily \#include "{}mylibs/moteur.\+h"{}}\newline
+{\ttfamily \#include "{}tim.\+h"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include "{}adc.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{moteur_8c_abb163b2eaa21085ca1efa176e5fede2f}{moteur\+Set\+Speed}} (char \texorpdfstring{$\ast$}{*}cmd)
+\begin{DoxyCompactList}\small\item\em Définit la vitesse du moteur en fonction de la commande reçue. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{moteur_8c_ad6b818c4839a7c2cddfb1d00dbf56b9d}{moteur\+Start}} (void)
+\begin{DoxyCompactList}\small\item\em Démarre le moteur en fixant un rapport cyclique initial de 50\%. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{moteur_8c_a3d0e303e234c350d342e0e523c716dee}{moteur\+Stop}} (void)
+\begin{DoxyCompactList}\small\item\em Arrête le moteur en fixant le rapport cyclique à 0\%. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{moteur_8c_a03473b1460cd766771c91e5ed5e75be9}{display\+Current}} (void)
+\begin{DoxyCompactList}\small\item\em Lit la valeur actuelle du courant via le tampon DMA et l\textquotesingle{}affiche sur la console. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{moteur_8c_adaa4be128fe3cf007506a431e945855a}{ADC\+\_\+\+DMA\+\_\+\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialise l\textquotesingle{}ADC en mode DMA avec déclenchement par TIMER. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{moteur_8c_a5e13d5e804153755eac47dab3aed5b63}{get\+Current}} (void)
+\begin{DoxyCompactList}\small\item\em Calcule le courant mesuré à partir des données ADC. \end{DoxyCompactList}\item 
+int16\+\_\+t \mbox{\hyperlink{moteur_8c_ae32de4a248b0327eaa5786caa64a68bf}{get\+Pos}} (void)
+\begin{DoxyCompactList}\small\item\em Retourne la position actuelle du moteur à partir du compteur du Timer. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{moteur_8c_a647f18f75ad8f9c01bca1be5e47b706b}{get\+Speed}} (int16\+\_\+t oldpos)
+\begin{DoxyCompactList}\small\item\em Calcule la vitesse de rotation du moteur en tours par minute (RPM). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implémentation des fonctions de contrôle du moteur via les signaux PWM. 
+
+\begin{DoxyAuthor}{Author}
+Aliou LY (\href{mailto:aliou.ly@ensea.fr}{\texttt{ aliou.\+ly@ensea.\+fr}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2024-\/11-\/09
+\end{DoxyDate}
+Ce fichier contient les fonctions permettant de démarrer, arrêter et ajuster la vitesse du moteur. La vitesse est contrôlée par un signal PWM, dont le rapport cyclique est ajusté progressivement pour éviter les transitions brutales. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{moteur_8c_adaa4be128fe3cf007506a431e945855a}\index{moteur.c@{moteur.c}!ADC\_DMA\_Init@{ADC\_DMA\_Init}}
+\index{ADC\_DMA\_Init@{ADC\_DMA\_Init}!moteur.c@{moteur.c}}
+\doxysubsubsection{\texorpdfstring{ADC\_DMA\_Init()}{ADC\_DMA\_Init()}}
+{\footnotesize\ttfamily \label{moteur_8c_adaa4be128fe3cf007506a431e945855a} 
+void ADC\+\_\+\+DMA\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Initialise l\textquotesingle{}ADC en mode DMA avec déclenchement par TIMER. 
+
+Configure le DMA pour transférer les données ADC dans un tampon et démarre le TIMER pour assurer un déclenchement périodique des conversions ADC. \Hypertarget{moteur_8c_a03473b1460cd766771c91e5ed5e75be9}\index{moteur.c@{moteur.c}!displayCurrent@{displayCurrent}}
+\index{displayCurrent@{displayCurrent}!moteur.c@{moteur.c}}
+\doxysubsubsection{\texorpdfstring{displayCurrent()}{displayCurrent()}}
+{\footnotesize\ttfamily \label{moteur_8c_a03473b1460cd766771c91e5ed5e75be9} 
+void display\+Current (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Lit la valeur actuelle du courant via le tampon DMA et l\textquotesingle{}affiche sur la console. 
+
+Cette fonction lit la dernière valeur convertie par l\textquotesingle{}ADC (gérée en arrière-\/plan par le DMA), calcule le courant correspondant à l\textquotesingle{}aide des paramètres calibrés, puis affiche la valeur du courant sur la console via {\ttfamily printf}. \Hypertarget{moteur_8c_a5e13d5e804153755eac47dab3aed5b63}\index{moteur.c@{moteur.c}!getCurrent@{getCurrent}}
+\index{getCurrent@{getCurrent}!moteur.c@{moteur.c}}
+\doxysubsubsection{\texorpdfstring{getCurrent()}{getCurrent()}}
+{\footnotesize\ttfamily \label{moteur_8c_a5e13d5e804153755eac47dab3aed5b63} 
+float get\+Current (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Calcule le courant mesuré à partir des données ADC. 
+
+Cette fonction lit la dernière valeur du tampon ADC (rempli automatiquement par DMA), calcule la tension de sortie correspondante, puis convertit cette tension en courant en utilisant une formule calibrée.
+
+\begin{DoxyReturn}{Returns}
+Le courant mesuré en ampères (float). 
+\end{DoxyReturn}
+\Hypertarget{moteur_8c_ae32de4a248b0327eaa5786caa64a68bf}\index{moteur.c@{moteur.c}!getPos@{getPos}}
+\index{getPos@{getPos}!moteur.c@{moteur.c}}
+\doxysubsubsection{\texorpdfstring{getPos()}{getPos()}}
+{\footnotesize\ttfamily \label{moteur_8c_ae32de4a248b0327eaa5786caa64a68bf} 
+int16\+\_\+t get\+Pos (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Retourne la position actuelle du moteur à partir du compteur du Timer. 
+
+Cette fonction lit la valeur actuelle du compteur du Timer (TIM3), configuré en mode encodeur, pour déterminer la position du moteur.
+
+\begin{DoxyReturn}{Returns}
+La position actuelle du moteur en tant qu\textquotesingle{}entier 16 bits signé. 
+\end{DoxyReturn}
+\Hypertarget{moteur_8c_a647f18f75ad8f9c01bca1be5e47b706b}\index{moteur.c@{moteur.c}!getSpeed@{getSpeed}}
+\index{getSpeed@{getSpeed}!moteur.c@{moteur.c}}
+\doxysubsubsection{\texorpdfstring{getSpeed()}{getSpeed()}}
+{\footnotesize\ttfamily \label{moteur_8c_a647f18f75ad8f9c01bca1be5e47b706b} 
+float get\+Speed (\begin{DoxyParamCaption}\item[{int16\+\_\+t}]{oldpos}{}\end{DoxyParamCaption})}
+
+
+
+Calcule la vitesse de rotation du moteur en tours par minute (RPM). 
+
+Cette fonction utilise la différence entre une position précédente et la position actuelle pour calculer la vitesse de rotation du moteur. La vitesse est exprimée en tours par minute (RPM) en utilisant la fréquence d\textquotesingle{}échantillonnage du système (Fe).
+
+
+\begin{DoxyParams}{Parameters}
+{\em oldpos} & La position précédente du moteur, obtenue à partir de {\ttfamily \doxylink{moteur_8c_ae32de4a248b0327eaa5786caa64a68bf}{get\+Pos()}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+La vitesse de rotation calculée en tours par minute (RPM) sous forme de nombre flottant. 
+\end{DoxyReturn}
+\Hypertarget{moteur_8c_abb163b2eaa21085ca1efa176e5fede2f}\index{moteur.c@{moteur.c}!moteurSetSpeed@{moteurSetSpeed}}
+\index{moteurSetSpeed@{moteurSetSpeed}!moteur.c@{moteur.c}}
+\doxysubsubsection{\texorpdfstring{moteurSetSpeed()}{moteurSetSpeed()}}
+{\footnotesize\ttfamily \label{moteur_8c_abb163b2eaa21085ca1efa176e5fede2f} 
+void moteur\+Set\+Speed (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{cmd}{}\end{DoxyParamCaption})}
+
+
+
+Définit la vitesse du moteur en fonction de la commande reçue. 
+
+Cette fonction reçoit une commande de type char\texorpdfstring{$\ast$}{*} représentant la vitesse souhaitée, la convertit en un entier, et la limite entre 0 et VITESSE\+\_\+\+MAX. Elle ajuste ensuite le rapport cyclique PWM.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & La commande de vitesse souhaitée transmise par UART \\
+\hline
+\end{DoxyParams}
+\Hypertarget{moteur_8c_ad6b818c4839a7c2cddfb1d00dbf56b9d}\index{moteur.c@{moteur.c}!moteurStart@{moteurStart}}
+\index{moteurStart@{moteurStart}!moteur.c@{moteur.c}}
+\doxysubsubsection{\texorpdfstring{moteurStart()}{moteurStart()}}
+{\footnotesize\ttfamily \label{moteur_8c_ad6b818c4839a7c2cddfb1d00dbf56b9d} 
+void moteur\+Start (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Démarre le moteur en fixant un rapport cyclique initial de 50\%. 
+
+Cette fonction initialise le moteur avec un rapport cyclique correspondant à une vitesse de 50\%. Elle configure les canaux TIM\+\_\+\+CHANNEL1 et TIM\+\_\+\+CHANNEL2 et les complémentaires pour démarrer le moteur. \Hypertarget{moteur_8c_a3d0e303e234c350d342e0e523c716dee}\index{moteur.c@{moteur.c}!moteurStop@{moteurStop}}
+\index{moteurStop@{moteurStop}!moteur.c@{moteur.c}}
+\doxysubsubsection{\texorpdfstring{moteurStop()}{moteurStop()}}
+{\footnotesize\ttfamily \label{moteur_8c_a3d0e303e234c350d342e0e523c716dee} 
+void moteur\+Stop (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Arrête le moteur en fixant le rapport cyclique à 0\%. 
+
+Cette fonction stoppe le moteur en mettant le rapport cyclique des canaux TIM\+\_\+\+CHANNEL1 et TIM\+\_\+\+CHANNEL2 à 0. Elle arrête le signal PWM pour chaque canal. 

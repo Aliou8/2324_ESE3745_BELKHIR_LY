@@ -6,6 +6,7 @@
  */
 #include "usart.h"
 #include "mylibs/shell.h"
+#include "mylibs/moteur.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -29,6 +30,7 @@ char *argv[MAX_ARGS];
 int argc = 0;
 char *token;
 int newCmdReady = 0;
+extern float vitesse ;
 
 void Shell_Init(void)
 {
@@ -97,6 +99,10 @@ void Shell_Loop(void)
 		{
 			moteurStart();
 		}
+		else if (strcmp(argv[0], "vitesse") == 0)
+				{
+					printf("la vitesse est %f \n",vitesse);
+				}
 		else if (strcmp(argv[0], "current") == 0)
 		{
 			displayCurrent();

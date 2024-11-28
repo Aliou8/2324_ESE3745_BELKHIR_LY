@@ -1,0 +1,145 @@
+\doxysection{D\+:/\+TP\+\_\+\+TD\+\_\+\+ENSEA\+\_\+3\+A/\+AUTO/2425\+\_\+\+ESE3745\+\_\+\+BELKHIR\+\_\+\+LY/stm32\+Projet/\+Core/\+Inc/mylibs/moteur.h File Reference}
+\hypertarget{moteur_8h}{}\label{moteur_8h}\index{D:/TP\_TD\_ENSEA\_3A/AUTO/2425\_ESE3745\_BELKHIR\_LY/stm32Projet/Core/Inc/mylibs/moteur.h@{D:/TP\_TD\_ENSEA\_3A/AUTO/2425\_ESE3745\_BELKHIR\_LY/stm32Projet/Core/Inc/mylibs/moteur.h}}
+
+
+Interface de contrôle du moteur, permettant de démarrer, arrêter, et ajuster la vitesse du moteur via des signaux PWM.  
+
+
+{\ttfamily \#include "{}tim.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_p_i_d__parameter__t}{PID\+\_\+parameter\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure contenant les paramètres du régulateur PID. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{moteur_8h_ad89cd130c64cf199461b25ce74f5d6c7}\label{moteur_8h_ad89cd130c64cf199461b25ce74f5d6c7} 
+\#define {\bfseries ALPHA\+\_\+\+MAX}~(TIM1-\/$>$ARR)
+\begin{DoxyCompactList}\small\item\em Valeur maximale du rapport cyclique PWM (correspond à 100\%). \end{DoxyCompactList}\item 
+\Hypertarget{moteur_8h_ae09b82e8938239b2cc7d928387482ada}\label{moteur_8h_ae09b82e8938239b2cc7d928387482ada} 
+\#define {\bfseries ALPHA\+\_\+\+MIN}~0
+\begin{DoxyCompactList}\small\item\em Valeur minimale du rapport cyclique PWM (correspond à 0\%). \end{DoxyCompactList}\item 
+\Hypertarget{moteur_8h_a732bfae1d2f366c630382d471bb7257e}\label{moteur_8h_a732bfae1d2f366c630382d471bb7257e} 
+\#define {\bfseries ALPHA\+\_\+0}~(\mbox{\hyperlink{moteur_8h_ad89cd130c64cf199461b25ce74f5d6c7}{ALPHA\+\_\+\+MAX}} / 2)
+\begin{DoxyCompactList}\small\item\em Valeur moyenne du rapport cyclique PWM (correspond à 50\%). \end{DoxyCompactList}\item 
+\Hypertarget{moteur_8h_afba35bbcedf3793b354746b6ccfb8f22}\label{moteur_8h_afba35bbcedf3793b354746b6ccfb8f22} 
+\#define {\bfseries VITESSE\+\_\+\+MAX}~3000
+\begin{DoxyCompactList}\small\item\em Vitesse maximale définie pour le moteur, exprimée RPM . \end{DoxyCompactList}\item 
+\Hypertarget{moteur_8h_a602abb8ec84dcb3b6f854a738310ea46}\label{moteur_8h_a602abb8ec84dcb3b6f854a738310ea46} 
+\#define {\bfseries ADC\+\_\+\+BUFFER\+\_\+\+SIZE}~1
+\begin{DoxyCompactList}\small\item\em Taille du tampon ADC utilisé pour les conversions en mode DMA. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{moteur_8h_ad6b818c4839a7c2cddfb1d00dbf56b9d}\label{moteur_8h_ad6b818c4839a7c2cddfb1d00dbf56b9d} 
+void {\bfseries moteur\+Start} (void)
+\begin{DoxyCompactList}\small\item\em Démarre le moteur avec un rapport cyclique initial de 50\%. \end{DoxyCompactList}\item 
+\Hypertarget{moteur_8h_a3d0e303e234c350d342e0e523c716dee}\label{moteur_8h_a3d0e303e234c350d342e0e523c716dee} 
+void {\bfseries moteur\+Stop} (void)
+\begin{DoxyCompactList}\small\item\em Arrête le moteur en fixant le rapport cyclique à 0\%. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{moteur_8h_abb163b2eaa21085ca1efa176e5fede2f}{moteur\+Set\+Speed}} (char \texorpdfstring{$\ast$}{*}cmd)
+\begin{DoxyCompactList}\small\item\em Ajuste la vitesse du moteur en fonction de la commande reçue. \end{DoxyCompactList}\item 
+\Hypertarget{moteur_8h_a03473b1460cd766771c91e5ed5e75be9}\label{moteur_8h_a03473b1460cd766771c91e5ed5e75be9} 
+void {\bfseries display\+Current} (void)
+\begin{DoxyCompactList}\small\item\em Affiche le courant mesuré par l\textquotesingle{}ADC sur la console. \end{DoxyCompactList}\item 
+\Hypertarget{moteur_8h_aec108e3ac581caa34a55f842a672bf92}\label{moteur_8h_aec108e3ac581caa34a55f842a672bf92} 
+void {\bfseries encodeur\+Start} (void)
+\begin{DoxyCompactList}\small\item\em Démarre l\textquotesingle{}encodeur pour mesurer la position et la vitesse du moteur. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{moteur_8h_a5e13d5e804153755eac47dab3aed5b63}{get\+Current}} (void)
+\begin{DoxyCompactList}\small\item\em Calcule et retourne le courant mesuré par l\textquotesingle{}ADC. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{moteur_8h_a647f18f75ad8f9c01bca1be5e47b706b}{get\+Speed}} (int16\+\_\+t oldpos)
+\begin{DoxyCompactList}\small\item\em Calcule et retourne la vitesse du moteur en tours par minute (RPM). \end{DoxyCompactList}\item 
+\Hypertarget{moteur_8h_adaa4be128fe3cf007506a431e945855a}\label{moteur_8h_adaa4be128fe3cf007506a431e945855a} 
+void {\bfseries ADC\+\_\+\+DMA\+\_\+\+Init} (void)
+\begin{DoxyCompactList}\small\item\em Initialise l\textquotesingle{}ADC en mode DMA avec un déclenchement périodique par TIMER. \end{DoxyCompactList}\item 
+\Hypertarget{moteur_8h_a9ba1ef74f949a7707be330bcd1c98f61}\label{moteur_8h_a9ba1ef74f949a7707be330bcd1c98f61} 
+void {\bfseries display\+Speed} (void)
+\begin{DoxyCompactList}\small\item\em Affiche la vitesse du moteur calculée sur la console. \end{DoxyCompactList}\item 
+int16\+\_\+t \mbox{\hyperlink{moteur_8h_ae32de4a248b0327eaa5786caa64a68bf}{get\+Pos}} (void)
+\begin{DoxyCompactList}\small\item\em Retourne la position actuelle du moteur à partir de l\textquotesingle{}encodeur. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface de contrôle du moteur, permettant de démarrer, arrêter, et ajuster la vitesse du moteur via des signaux PWM. 
+
+\begin{DoxyAuthor}{Author}
+Aliou LY 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2024-\/11-\/11
+\end{DoxyDate}
+Ce fichier fournit les constantes, structures et prototypes nécessaires pour contrôler un moteur. Le moteur est contrôlé par un signal PWM, et des fonctions supplémentaires permettent de mesurer le courant, la position et la vitesse du moteur.
+
+\begin{DoxyNote}{Note}
+Ce fichier doit être utilisé avec le fichier d\textquotesingle{}implémentation {\ttfamily moteur.\+c}. 
+\end{DoxyNote}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{moteur_8h_a5e13d5e804153755eac47dab3aed5b63}\index{moteur.h@{moteur.h}!getCurrent@{getCurrent}}
+\index{getCurrent@{getCurrent}!moteur.h@{moteur.h}}
+\doxysubsubsection{\texorpdfstring{getCurrent()}{getCurrent()}}
+{\footnotesize\ttfamily \label{moteur_8h_a5e13d5e804153755eac47dab3aed5b63} 
+float get\+Current (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Calcule et retourne le courant mesuré par l\textquotesingle{}ADC. 
+
+\begin{DoxyReturn}{Returns}
+La valeur du courant mesuré en ampères. 
+\end{DoxyReturn}
+\Hypertarget{moteur_8h_ae32de4a248b0327eaa5786caa64a68bf}\index{moteur.h@{moteur.h}!getPos@{getPos}}
+\index{getPos@{getPos}!moteur.h@{moteur.h}}
+\doxysubsubsection{\texorpdfstring{getPos()}{getPos()}}
+{\footnotesize\ttfamily \label{moteur_8h_ae32de4a248b0327eaa5786caa64a68bf} 
+int16\+\_\+t get\+Pos (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Retourne la position actuelle du moteur à partir de l\textquotesingle{}encodeur. 
+
+\begin{DoxyReturn}{Returns}
+La position actuelle du moteur. 
+\end{DoxyReturn}
+\Hypertarget{moteur_8h_a647f18f75ad8f9c01bca1be5e47b706b}\index{moteur.h@{moteur.h}!getSpeed@{getSpeed}}
+\index{getSpeed@{getSpeed}!moteur.h@{moteur.h}}
+\doxysubsubsection{\texorpdfstring{getSpeed()}{getSpeed()}}
+{\footnotesize\ttfamily \label{moteur_8h_a647f18f75ad8f9c01bca1be5e47b706b} 
+float get\+Speed (\begin{DoxyParamCaption}\item[{int16\+\_\+t}]{oldpos}{}\end{DoxyParamCaption})}
+
+
+
+Calcule et retourne la vitesse du moteur en tours par minute (RPM). 
+
+Cette fonction utilise une position précédente pour calculer la vitesse actuelle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em oldpos} & La dernière position connue du moteur. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+La vitesse du moteur en RPM. 
+\end{DoxyReturn}
+\Hypertarget{moteur_8h_abb163b2eaa21085ca1efa176e5fede2f}\index{moteur.h@{moteur.h}!moteurSetSpeed@{moteurSetSpeed}}
+\index{moteurSetSpeed@{moteurSetSpeed}!moteur.h@{moteur.h}}
+\doxysubsubsection{\texorpdfstring{moteurSetSpeed()}{moteurSetSpeed()}}
+{\footnotesize\ttfamily \label{moteur_8h_abb163b2eaa21085ca1efa176e5fede2f} 
+void moteur\+Set\+Speed (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{cmd}{}\end{DoxyParamCaption})}
+
+
+
+Ajuste la vitesse du moteur en fonction de la commande reçue. 
+
+Cette fonction prend une commande sous forme de chaîne de caractères, la convertit en valeur numérique, et ajuste la vitesse du moteur via le PWM.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & La commande de vitesse sous forme de chaîne de caractères. \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,50 @@
+\doxysection{moteur.\+h}
+\hypertarget{moteur_8h_source}{}\label{moteur_8h_source}\index{D:/TP\_TD\_ENSEA\_3A/AUTO/2425\_ESE3745\_BELKHIR\_LY/stm32Projet/Core/Inc/mylibs/moteur.h@{D:/TP\_TD\_ENSEA\_3A/AUTO/2425\_ESE3745\_BELKHIR\_LY/stm32Projet/Core/Inc/mylibs/moteur.h}}
+\mbox{\hyperlink{moteur_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#ifndef\ \_\_MOTEUR\_\_}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ \_\_MOTEUR\_\_}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}tim.h"{}}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ ALPHA\_MAX\ (TIM1-\/>ARR)}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ ALPHA\_MIN\ 0}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ ALPHA\_0\ (ALPHA\_MAX\ /\ 2)}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ VITESSE\_MAX\ 3000}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#define\ ADC\_BUFFER\_SIZE\ 1}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{struct_p_i_d__parameter__t_a70a97dabcc12b5a64defe965599206cd}{Kp}};\ \ \ \ \ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{struct_p_i_d__parameter__t_a953d4cfa2ebf7ddc61583d1e2abebad5}{Ki}};\ \ \ \ \ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{struct_p_i_d__parameter__t_a5d8020a1e1c263546af2fb42bd2490b6}{Kd}};\ \ \ \ \ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{struct_p_i_d__parameter__t_adf9eb6a0e1d9840d2ec3be6d4294a13d}{dt}};\ \ \ \ \ }
+\DoxyCodeLine{00054\ \}\ \mbox{\hyperlink{struct_p_i_d__parameter__t}{PID\_parameter\_t}};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00059\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{moteur_8h_ad6b818c4839a7c2cddfb1d00dbf56b9d}{moteurStart}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00064\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{moteur_8h_a3d0e303e234c350d342e0e523c716dee}{moteurStop}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00074\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{moteur_8h_abb163b2eaa21085ca1efa176e5fede2f}{moteurSetSpeed}}(\textcolor{keywordtype}{char}\ *cmd);}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00079\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{moteur_8h_a03473b1460cd766771c91e5ed5e75be9}{displayCurrent}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00084\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{moteur_8h_aec108e3ac581caa34a55f842a672bf92}{encodeurStart}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00091\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{moteur_8h_a5e13d5e804153755eac47dab3aed5b63}{getCurrent}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00101\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{moteur_8h_a647f18f75ad8f9c01bca1be5e47b706b}{getSpeed}}(int16\_t\ oldpos);}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00106\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{moteur_8h_adaa4be128fe3cf007506a431e945855a}{ADC\_DMA\_Init}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00111\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{moteur_8h_a9ba1ef74f949a7707be330bcd1c98f61}{displaySpeed}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00118\ int16\_t\ \mbox{\hyperlink{moteur_8h_ae32de4a248b0327eaa5786caa64a68bf}{getPos}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ \_\_MOTEUR\_\_}}
+
+\end{DoxyCode}
