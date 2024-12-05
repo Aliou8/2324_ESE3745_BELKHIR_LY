@@ -49,15 +49,18 @@ Le dead time est  calculé en ajoutant deux temps : le Turn-Off Delay Time (35 n
 
 ### 4.1 Fréquence d'horloge du processeur : 170 MHz
 Cela donne un temps par tick d'horloge de :
-$
+
+$$
 \text{Nombre de ticks} = \frac{100 \, \text{ns}}{5.88 \, \text{ns/tick}} \approx 17 \, \text{ticks}
-$
+$$
 
 ### 4.2 Dead Time de 100 ns
 Nous voulons un dead time de 100 ns. Le nombre de ticks correspondant est calculé comme suit :
+
 $$
 \text{Nombre de ticks} = \frac{100 \, \text{ns}}{5.88 \, \text{ns/tick}} \approx 17 \, \text{ticks}
 $$
+
 Ainsi, le **dead time** doit être réglé à **17 ticks**.
 
 ---
