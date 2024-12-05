@@ -11,9 +11,9 @@ Le processeur fonctionne à une fréquence de 170 MHz, soit \( 170 	imes 10^6 \)
 Pour générer un signal PWM avec une fréquence de 20 kHz, nous devons configurer deux registres du timer STM32 : ARR (Auto-Reload Register) et PSC (Prescaler).
 
 Le calcul pour déterminer ces paramètres se fait comme suit :
-$
+$$
 \ f_{timer} = \frac{f_{horloge}}{(PSC + 1) \times (ARR + 1)}
-$
+$$
 ## 3. Choix des Paramètres : ARR et PSC
 Nous voulons une fréquence de sortie de 20 kHz. 
 Pour avcoir une resolution de 10bits : ARR de 1024-1 , nous pouvons calculer le prescaler :
