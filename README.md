@@ -12,14 +12,14 @@ Pour générer un signal PWM avec une fréquence de 20 kHz, nous devons configur
 
 Le calcul pour déterminer ces paramètres se fait comme suit :
 $$
-\f = \frac{f}{(PSC + 1) \times (ARR + 1)}
+f = \frac{f}{(PSC + 1) \times (ARR + 1)}
 $$
 ## 3. Choix des Paramètres : ARR et PSC
 Nous voulons une fréquence de sortie de 20 kHz. 
 Pour avcoir une resolution de 10bits : ARR de 1024-1 , nous pouvons calculer le prescaler :
 
 $$
-20 \, \text{kHz} = \frac{170 \, \text{MHz}}{(PSC + 1) \times (1023 + 1)}
+20\text{kHz} = \frac{170 \, \text{MHz}}{(PSC + 1) \times (1023 + 1)}
 $$
 
 En résolvant pour \( PSC \), nous trouvons :
