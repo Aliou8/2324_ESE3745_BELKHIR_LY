@@ -12,7 +12,7 @@ Pour générer un signal PWM avec une fréquence de 20 kHz, nous devons configur
 
 Le calcul pour déterminer ces paramètres se fait comme suit :
 $$
-\ f_{timer} = \frac{f_{horloge}}{(PSC + 1) \times (ARR + 1)}
+\f_{timer} = \frac{f_{horloge}}{(PSC + 1) \times (ARR + 1)}
 $$
 ## 3. Choix des Paramètres : ARR et PSC
 Nous voulons une fréquence de sortie de 20 kHz. 
