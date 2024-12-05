@@ -93,7 +93,7 @@ $$
 
 ### 2. Conversion de la valeur mesurée en courant
 
-L'ADC mesure la tension $V_{\text{out}}$, qui est ensuite convertie en courant. L'ADC a une résolution de 12 bits, ce qui signifie qu'il peut donner une valeur entre 0 et $2^{12} - 1 = 4095$.
+L'ADC mesure la tension $V_{\text{out}}$, qui est ensuite convertie en courant. L'ADC a une résolution de 12 bits, ce qui signifie qu'il peut donner une valeur entre 0 et $ 2^{12} - 1 = 4095 $.
 
 #### Étapes de conversion :
 
