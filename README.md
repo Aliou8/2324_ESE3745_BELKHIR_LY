@@ -100,7 +100,7 @@ L'ADC mesure la tension **V_{\text{out}}**, qui est ensuite convertie en courant
 1. **Calculer la tension mesurée \( V_{\text{out}} \)** : L'ADC fournit une valeur numérique entre 0 et 4095. Pour obtenir la tension correspondante, nous devons utiliser la référence de l'ADC. Si la référence est de 3.3V, la formule pour obtenir la tension mesurée est :
 
 $$
-V_{\text{out}} = \frac{{ADC\_value}}{4095}\timesV_{\text{ref}}
+V_{\text{out}} = \frac{{ADC\_value}}{4095} \times V_{\text{ref}}
 $$
 
    - ${ADC\_value}$ : Valeur lue par l'ADC (entre 0 et 4095)
@@ -108,9 +108,9 @@ $$
 
 3. **Calculer le courant à partir de la tension mesurée** : Une fois que vous avez \( V_{\text{out}} \), vous pouvez résoudre la relation :
 
-   \[
-   V_{\text{out}} = V_{\text{off}} + K_s \times I
-   \]
+   $$
+   V_{out} = V_{off} + K_s \times I
+   $$
 
    pour obtenir le courant \( I \) :
 
