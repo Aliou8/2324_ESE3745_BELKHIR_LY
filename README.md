@@ -108,14 +108,15 @@ $$
 
 3. **Calculer le courant à partir de la tension mesurée** : Une fois que vous avez \( V_{\text{out}} \), vous pouvez résoudre la relation :
 
-   $$
-   V_{out} = V_{off} + K_s \times I
-   $$
+
+$$
+V_{\text{out}}= V_{\text{off}} + K_s \times I
+$$
 
    pour obtenir le courant \( I \) :
 
-   \[
-   I = \frac{V_{\text{out}} - V_{\text{off}}}{K_s}
-   \]
+$$
+I = \frac{V_{\text{out}} - V_{\text{off}}}{K_s}
+$$
 
 ## Mesure de vitesse
