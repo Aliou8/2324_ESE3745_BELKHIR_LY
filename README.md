@@ -103,7 +103,7 @@ $$
 V_{\text{out}} = \frac{{ADC\_value}}{4095} \times V_{\text{ref}}
 $$
 
-   - ${ADC\_value}$ : Valeur lue par l'ADC (entre 0 et 4095)
+   - ${ADC\_{value}}$ : Valeur lue par l'ADC (entre 0 et 4095)
    - $V_{\text{ref}}$ : Tension de référence de l'ADC (3.3V typiquement)
 
 3. **Calculer le courant à partir de la tension mesurée** : Une fois que vous avez \( V_{\text{out}} \), vous pouvez résoudre la relation :
